@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Format eldesalarm log
 // @namespace    https://github.com/pirminis/format-eldesalarm-log
-// @version      0.0.3
+// @version      0.0.4
 // @description  Automatically format, sort eldesalarm log
 // @author       pirminis
 // @match        https://gates.eldesalarms.com/en/gatesconfig/settings/getlog/ajax/*/device_id/*/filename/*_device.log/view/*.html
