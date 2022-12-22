@@ -22,7 +22,7 @@
   let linesForSorting = [];
   let content = '';
   let skipIndex = false;
-  let checkValue = '';
+  let checkValue = 1;
 
   for (let i = 0; i < lines.length - 1; i++) {
     if (lines[i].match(authFailurePattern)) {
