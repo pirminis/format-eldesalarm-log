@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Format eldesalarm log
 // @namespace    https://github.com/pirminis/format-eldesalarm-log
-// @version      0.0.2
+// @version      0.0.3
 // @description  Automatically format, sort eldesalarm log
 // @author       pirminis
 // @match        https://gates.eldesalarms.com/en/gatesconfig/settings/getlog/ajax/*/device_id/*/filename/*_device.log/view/*.html
@@ -13,6 +13,7 @@
   'use strict';
 
   const dataSplitPattern = /^(\d{4}\.\d{2}\.\d{2}\s\d{2}:\d{2}:\d{2})\s(.*):(\+\d+)$/;
+  const authFailurePattern = /Auth\. failed/;
 
   let body = document.getElementsByTagName('body')[0];
   let text = body.innerText;
@@ -20,10 +21,23 @@
   let normalizedLines = [];
   let linesForSorting = [];
   let content = '';
+  let skipIndex = false;
 
   for (let i = 0; i < lines.length - 1; i++) {
-    if (i % 2 == 1) {
+    if (lines[i].match(authFailurePattern)) {
+      normalizedLines.push(lines[i].toString());
+      skipIndex = !skipIndex;
       continue;
+    }
+
+    if (skipIndex) {
+      if (i % 2 == 0) {
+        continue;
+      }
+    } else {
+      if (i % 2 == 1) {
+        continue;
+      }
     }
 
     normalizedLines.push(lines[i].toString() + lines[i + 1].toString());
