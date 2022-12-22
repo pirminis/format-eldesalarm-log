@@ -22,6 +22,7 @@
   let linesForSorting = [];
   let content = '';
   let skipIndex = false;
+  let checkValue = '';
 
   for (let i = 0; i < lines.length - 1; i++) {
     if (lines[i].match(authFailurePattern)) {
@@ -30,14 +31,10 @@
       continue;
     }
 
-    if (skipIndex) {
-      if (i % 2 == 0) {
-        continue;
-      }
-    } else {
-      if (i % 2 == 1) {
-        continue;
-      }
+    checkValue = skipIndex ? 0 : 1;
+
+    if (i % 2 == checkValue) {
+      continue;
     }
 
     normalizedLines.push(lines[i].toString() + lines[i + 1].toString());
