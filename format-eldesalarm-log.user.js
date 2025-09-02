@@ -13,7 +13,7 @@
   'use strict';
 
   const dataSplitPattern = /^(\d{4}\.\d{2}\.\d{2}\s\d{2}:\d{2}:\d{2})\s(.*):(\+\d+)$/;
-  const authFailurePattern = /Auth\. failed/;
+  const skipLineJoinPattern = /(Auth\. failed|W:.*?added\sin)/;
 
   const body = document.getElementsByTagName('body')[0];
   const text = body.innerText;
@@ -25,7 +25,7 @@
   let checkValue = 1;
 
   for (let i = 0; i < lines.length - 1; i++) {
-    if (lines[i].match(authFailurePattern)) {
+    if (lines[i].match(skipLineJoinPattern)) {
       normalizedLines.push(lines[i].toString());
       skipIndex = !skipIndex;
       continue;
