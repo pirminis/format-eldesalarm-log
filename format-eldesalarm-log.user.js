@@ -45,14 +45,14 @@
     let match = normalizedLines[i].match(callPattern);
 
     if (match !== null) {
-      linesForSorting.push({ date: match[1], text: match[2], phone: match[3] });
+      linesForSorting.push({ date: toLocalDate(match[1]), text: match[2], phone: match[3] });
       continue;
     }
 
     match = normalizedLines[i].match(userAddedPattern);
 
     if (match !== null) {
-      linesForSorting.push({ date: match[1], text: `Added user "${match[2]}"`, phone: `+${match[3]}` });
+      linesForSorting.push({ date: toLocalDate(match[1]), text: `Added user "${match[2]}"`, phone: `+${match[3]}` });
     }
   }
 
@@ -83,7 +83,7 @@
     <table>
       <thead>
         <tr>
-          <th>Date (UTC)</th>
+          <th>Date (Europe/Vilnius)</th>
           <th>Text</th>
           <th>Phone number</th>
         </tr>
@@ -95,6 +95,10 @@
   `;
 
   body.innerHTML = output;
+
+  function toLocalDate(utcDate) {
+    return (new Date(utcDate.replace(/\./g, '-') + ' UTC')).toLocaleString('lt-LT', { timeZone: 'Europe/Vilnius' });
+  }
 
   function compareDates(a, b) {
     if (a.date < b.date) {
