@@ -12,8 +12,9 @@
 (function(_global) {
   'use strict';
 
-  const dataSplitPattern = /^(\d{4}\.\d{2}\.\d{2}\s\d{2}:\d{2}:\d{2})\s(.*):(\+\d+)$/;
-  const skipLineJoinPattern = /(Auth\. failed|W:.*?added\sin)/;
+  const callPattern = /^(\d{4}\.\d{2}\.\d{2}\s\d{2}:\d{2}:\d{2})\s(.*):(\+\d+)$/;
+  const userAddedPattern = /^(\d{4}\.\d{2}\.\d{2}\s\d{2}:\d{2}:\d{2})\sW:\sUser\s(.+)\s\[(.+)\]\sadded in.*$/;
+  const skipLineJoinPattern = /(Auth\. failed|W:)/;
 
   const body = document.getElementsByTagName('body')[0];
   const text = body.innerText;
@@ -41,9 +42,18 @@
   }
 
   for (let i = 0; i < normalizedLines.length; i++) {
-    const match = normalizedLines[i].match(dataSplitPattern);
+    let match = normalizedLines[i].match(callPattern);
 
-    linesForSorting.push({ date: match[1], text: match[2], phone: match[3] });
+    if (match !== null) {
+      linesForSorting.push({ date: match[1], text: match[2], phone: match[3] });
+      continue;
+    }
+
+    match = normalizedLines[i].match(userAddedPattern);
+
+    if (match !== null) {
+      linesForSorting.push({ date: match[1], text: `Added user "${match[2]}"`, phone: `+${match[3]}` });
+    }
   }
 
   linesForSorting.sort(compareDates);
