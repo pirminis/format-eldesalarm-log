@@ -9,17 +9,17 @@
 // @downloadURL  https://github.com/pirminis/format-eldesalarm-log/raw/master/format-eldesalarm-log.user.js
 // ==/UserScript==
 
-(function(global) {
+(function(_global) {
   'use strict';
 
   const dataSplitPattern = /^(\d{4}\.\d{2}\.\d{2}\s\d{2}:\d{2}:\d{2})\s(.*):(\+\d+)$/;
   const authFailurePattern = /Auth\. failed/;
 
-  let body = document.getElementsByTagName('body')[0];
-  let text = body.innerText;
-  let lines = text.split("\n");
-  let normalizedLines = [];
-  let linesForSorting = [];
+  const body = document.getElementsByTagName('body')[0];
+  const text = body.innerText;
+  const lines = text.split("\n");
+  const normalizedLines = [];
+  const linesForSorting = [];
   let content = '';
   let skipIndex = false;
   let checkValue = 1;
@@ -41,7 +41,7 @@
   }
 
   for (let i = 0; i < normalizedLines.length; i++) {
-    let match = normalizedLines[i].match(dataSplitPattern);
+    const match = normalizedLines[i].match(dataSplitPattern);
 
     linesForSorting.push({ date: match[1], text: match[2], phone: match[3] });
   }
@@ -58,7 +58,7 @@
     `
   }
 
-  let output = `
+  const output = `
     <style>
       table {
         border-collapse: collapse;
